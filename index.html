@@ -125,12 +125,43 @@
             border-radius: 10px; font-family: inherit; font-weight: 600; margin-top: 10px;
             cursor: pointer;
         }
+   .legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    margin: 10px 0;
+    font-size: 0.8rem;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 10px;
+    width: 280px;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-box { width: 15px; height: 15px; border-radius: 3px; }
+.legend-box.pink { background-color: var(--pink); }
+.legend-box.blue { background-color: var(--blue); }
+.legend-box.grey { background-color: var(--grey); }
+
     </style>
 </head>
 <body>
 
 <header><h1>GUESS THE WORD!</h1></header>
-
+<div class="legend">
+    <div class="legend-item">
+        <div class="legend-box pink"></div>
+        <span>Pink = Right letter, right position</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-box blue"></div>
+        <span>Blue = Right letter, wrong position</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-box grey"></div>
+        <span>Grey = Wrong letter!</span>
+    </div>
+</div>
 <div id="game-container">
     <div id="board"></div>
 </div>
@@ -144,23 +175,24 @@
 <div id="intro-modal" class="modal-overlay">
     <div class="modal">
         <h2>How To Play</h2>
-        <p>Guess the word correctly in 6 tries!</p>
-        <p><i>Only valid words can be entered.</i></p>
+        <p>Guess the word of the day in 6 tries!</p>
+        <p>Only valid words can be entered.</p>
+        <p>After each guess, each box changes colour to show how close your guess was.</p>
         <hr>
         <div class="example-grid">
             <div class="ex-tile correct">A</div><div class="ex-tile">P</div><div class="ex-tile">P</div><div class="ex-tile">L</div><div class="ex-tile">E</div>
         </div>
-        <p><strong>Pink</strong> = Right letter, right box</p>
+        <p><strong>Pink</strong> = "A" is in the word and in the correct position</p>
         
         <div class="example-grid">
             <div class="ex-tile">D</div><div class="ex-tile present">R</div><div class="ex-tile">E</div><div class="ex-tile">A</div><div class="ex-tile">M</div>
         </div>
-        <p><strong>Blue</strong> = Right letter, wrong box</p>
+        <p><strong>Blue</strong> = "R" is in the word but in the wrong position</p>
 
         <div class="example-grid">
-            <div class="ex-tile">G</div><div class="ex-tile">E</div><div class="ex-tile absent">R</div><div class="ex-tile">M</div><div class="ex-tile">S</div>
+            <div class="ex-tile">G</div><div class="ex-tile">E</div><div class="ex-tile">R</div><div class="ex-tile absent">M</div><div class="ex-tile">S</div>
         </div>
-        <p><strong>Grey</strong> = The word doesn't contain this letter</p>
+        <p><strong>Grey</strong> = "M" is not in the word at all</p>
         <hr>
         <p>A new word drops everyday!</p>
         <button class="close-btn" onclick="closeIntro()">PLAY</button>
@@ -204,7 +236,7 @@
         board.appendChild(row);
     }
 
-    const rows = [["Q","W","E","R","T","Y","U","I","O","P"], ["A","S","D","F","G","H","J","K","L"], ["ENTER","Z","X","C","V","B","N","M","DEL"]];
+    const rows = [["Q","W","E","R","T","Y","U","I","O","P"], ["A","S","D","F","G","H","J","K","L"], ["DEL","Z","X","C","V","B","N","M","ENTER"]];
     rows.forEach((row, i) => {
         const container = document.getElementById(`row${i+1}`);
         row.forEach(key => {
