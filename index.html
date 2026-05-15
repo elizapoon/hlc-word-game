@@ -279,7 +279,7 @@
 
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`);
         if (!response.ok) {
-            alert("Not a valid word!");
+            alert("You can only guess using valid words. Try again!");
             return;
         }
 
