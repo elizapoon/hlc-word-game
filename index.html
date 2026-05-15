@@ -17,107 +17,106 @@
 
         * { box-sizing: border-box; }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents awkward scrolling */
+        }
+
         body {
             background-color: var(--white);
             font-family: 'Fredoka', sans-serif;
-            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Fix for mobile browser address bars */
+            /* Fix for mobile browser UI bars */
             height: 100vh;
-            height: -webkit-fill-available; 
-            overflow: hidden;
-            padding: 10px;
+            height: -webkit-fill-available;
+            padding: 5px;
         }
 
-        header { margin-top: 5px; }
-        h1 { margin: 0; font-size: 1.2rem; letter-spacing: 2px; text-align: center; }
+        header { flex: 0 0 auto; padding: 5px 0; }
+        h1 { margin: 0; font-size: clamp(1rem, 4vw, 1.4rem); letter-spacing: 2px; }
 
         .legend {
+            flex: 0 0 auto;
             display: flex;
-            flex-direction: row; /* Horizontal to save vertical space */
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
+            gap: 8px;
+            margin: 5px 0;
             font-size: 0.7rem;
             background: #f9f9f9;
-            padding: 8px;
-            border-radius: 10px;
+            padding: 6px;
+            border-radius: 8px;
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
         }
         .legend-item { display: flex; align-items: center; gap: 4px; }
-        .legend-box { width: 12px; height: 12px; border-radius: 2px; }
+        .legend-box { width: 10px; height: 10px; border-radius: 2px; }
         .legend-box.pink { background-color: var(--pink); }
         .legend-box.blue { background-color: var(--blue); }
         .legend-box.grey { background-color: var(--grey); }
 
         #game-container {
-            flex-grow: 1;
+            flex: 1 1 auto; /* This container grows and shrinks */
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Keeps board centered in remaining space */
+            justify-content: center;
             align-items: center;
             width: 100%;
-            min-height: 0; /* Important for flex-shrink */
+            min-height: 0; /* Critical for flex shrinking */
         }
 
         #board {
-    display: grid;
-    grid-template-rows: repeat(6, 1fr);
-    gap: 8px;
-    padding: 10px;
-    /* This ensures the board takes up available space but doesn't shrink to 0 */
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: 4px;
+            padding: 5px;
+            height: 100%;
+            max-height: 380px; /* Limits size on big screens */
+            aspect-ratio: 5 / 6;
+        }
 
-.row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    width: 100%;
-    max-width: 300px; /* Limits how wide the board gets on desktops */
-}
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+        }
 
-.tile {
-    aspect-ratio: 1 / 1;
-    width: 100%; /* Tiles will fill the width of the row */
-    min-width: 45px; /* Prevents them from becoming tiny dots */
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
+        .tile {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1 / 1;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(1rem, 5vh, 1.4rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
 
-        .correct { background-color: var(--pink); border-color: var(--pink); color: white; }
-        .present { background-color: var(--blue); border-color: var(--blue); color: white; }
-        .absent { background-color: var(--grey); border-color: var(--grey); color: white; }
+        /* Status Colors */
+        .correct { background-color: var(--pink) !important; border-color: var(--pink) !important; color: white; }
+        .present { background-color: var(--blue) !important; border-color: var(--blue) !important; color: white; }
+        .absent { background-color: var(--grey) !important; border-color: var(--grey) !important; color: white; }
 
         #keyboard {
+            flex: 0 0 auto; /* Keyboard stays at its preferred size */
             width: 100%;
-            max-width: 500px;
-            padding: 5px;
-            margin-top: auto; /* Pushes keyboard to the bottom */
-            margin-bottom: 5px;
+            max-width: 480px;
+            padding: 5px 0 15px 0; /* Extra bottom padding for "safe area" */
         }
 
         .kb-row {
             display: flex;
             justify-content: center;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             touch-action: manipulation;
-            width: 100%;
         }
 
         .key {
@@ -125,15 +124,16 @@
             border: none;
             border-radius: 4px;
             margin: 0 2px;
-            height: 45px;
+            height: clamp(40px, 7vh, 55px);
             flex: 1;
             font-family: inherit;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: clamp(0.7rem, 3vw, 0.9rem);
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -142,20 +142,17 @@
         /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center;
             z-index: 1000;
         }
         .modal {
-            background: white; padding: 20px; border-radius: 20px; width: 90%; max-width: 400px;
-            text-align: center; max-height: 85vh; overflow-y: auto;
+            background: white; padding: 20px; border-radius: 20px; width: 85%; max-width: 380px;
+            text-align: center; max-height: 80vh; overflow-y: auto;
         }
         .hidden { display: none !important; }
-        .example-grid { display: flex; gap: 5px; justify-content: center; margin: 10px 0; }
-        .ex-tile { width: 30px; height: 30px; border: 2px solid var(--border); border-radius: 5px; 
-                   display: flex; justify-content: center; align-items: center; font-weight: 600; }
         .modal button.close-btn { 
-            background: var(--blue); color: white; border: none; padding: 10px 30px; 
-            border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer;
+            background: var(--blue); color: white; border: none; padding: 12px 30px; 
+            border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 10px;
         }
     </style>
 </head>
@@ -164,9 +161,9 @@
 <header><h1>GUESS THE WORD!</h1></header>
 
 <div class="legend">
-    <div class="legend-item"><div class="legend-box pink"></div><span>Pink = Correct</span></div>
-    <div class="legend-item"><div class="legend-box blue"></div><span>Blue = Wrong Spot</span></div>
-    <div class="legend-item"><div class="legend-box grey"></div><span>Grey = Not in Word</span></div>
+    <div class="legend-item"><div class="legend-box pink"></div><span>Pink=Right</span></div>
+    <div class="legend-item"><div class="legend-box blue"></div><span>Blue=Wrong Spot</span></div>
+    <div class="legend-item"><div class="legend-box grey"></div><span>Grey=Incorrect</span></div>
 </div>
 
 <div id="game-container">
@@ -179,30 +176,25 @@
     <div class="kb-row" id="row3"></div>
 </div>
 
-<!-- Modals remain the same as your original logic -->
 <div id="intro-modal" class="modal-overlay">
     <div class="modal">
         <h2>How To Play</h2>
-        <p>Guess the word of the day in 6 tries!</p>
-        <hr>
-        <div class="example-grid"><div class="ex-tile correct">A</div><div class="ex-tile">P</div><div class="ex-tile">P</div><div class="ex-tile">L</div><div class="ex-tile">E</div></div>
-        <p><strong>Pink</strong> = Correct position</p>
-        <div class="example-grid"><div class="ex-tile">D</div><div class="ex-tile present">R</div><div class="ex-tile">E</div><div class="ex-tile">A</div><div class="ex-tile">M</div></div>
-        <p><strong>Blue</strong> = Wrong position</p>
+        <p>Guess the word in 6 tries!</p>
+        <p>Colors change to show how close you were.</p>
         <button class="close-btn" onclick="closeIntro()">PLAY</button>
     </div>
 </div>
 
 <div id="result-modal" class="modal-overlay hidden">
     <div class="modal">
-        <p id="result-msg"></p>
+        <div id="result-msg"></div>
         <button class="close-btn" onclick="location.reload()">OK</button>
     </div>
 </div>
 
 <script>
-    // Logic remains identical to your original script to preserve game functionality
     const wordList = ["SLEEP", "HAPPY", "SWEAT", "SUGAR", "WATER", "CYCLE", "FRESH", "BLOOD", "OBESE", "HOBBY", "SPORT", "FOCUS", "CHUNK", "EXERT", "HABIT", "DAIRY", "JOINT", "DETOX", "CHECK", "FRUIT", "ROUTE", "GRAIN", "RELAX", "ENOKI", "HEART", "SQUAT", "FIBRE", "MUSIC", "BRISK", "INDEX", "LUNGE", "GLAND", "SPIKE", "SPEED", "DANCE", "QUIRK", "VITAL", "PLANK", "LIMIT", "GLUTE", "AGILE", "MACRO", "VEGAN", "LIPID", "COLON", "OMEGA", "LYMPH"];
+    
     const startDate = new Date(2026, 4, 14); 
     const today = new Date();
     const diff = Math.floor((today.setHours(0,0,0,0) - startDate.setHours(0,0,0,0)) / 86400000);
@@ -211,7 +203,9 @@
     let currentGuess = "";
     let currentRow = 0;
     let gameOver = false;
+    const keyMap = {}; // To track keyboard colors
 
+    // Build Board
     const board = document.getElementById('board');
     for (let i = 0; i < 6; i++) {
         const row = document.createElement('div');
@@ -224,25 +218,33 @@
         board.appendChild(row);
     }
 
-    const rows = [["Q","W","E","R","T","Y","U","I","O","P"], ["A","S","D","F","G","H","J","K","L"], ["DEL","Z","X","C","V","B","N","M","ENTER"]];
+    // Build Keyboard
+    const rows = [
+        ["Q","W","E","R","T","Y","U","I","O","P"],
+        ["A","S","D","F","G","H","J","K","L"],
+        ["DEL","Z","X","C","V","B","N","M","ENTER"]
+    ];
+
     rows.forEach((row, i) => {
         const container = document.getElementById(`row${i+1}`);
         row.forEach(key => {
             const btn = document.createElement('button');
             btn.className = 'key' + (key.length > 1 ? ' wide' : '');
             btn.textContent = key;
+            btn.id = `key-${key}`;
             btn.onclick = () => handleInput(key);
             container.appendChild(btn);
+            keyMap[key] = btn;
         });
     });
 
     function handleInput(key) {
         if (gameOver) return;
         if (key === "ENTER") submitGuess();
-        else if (key === "DEL") {
+        else if (key === "DEL" || key === "BACKSPACE") {
             currentGuess = currentGuess.slice(0, -1);
             updateBoard();
-        } else if (currentGuess.length < 5 && key.length === 1) {
+        } else if (currentGuess.length < 5 && key.length === 1 && /[A-Z]/.test(key)) {
             currentGuess += key;
             updateBoard();
         }
@@ -258,49 +260,86 @@
 
     async function submitGuess() {
         if (currentGuess.length !== 5) return;
-        const isValid = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`).then(r => r.ok);
-        if (!isValid) {
-            alert("Not a valid word!");
+
+        // Simple validation check
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`);
+        if (!response.ok) {
+            alert("Not in word list!");
             return;
         }
+
         const tiles = document.getElementsByClassName('row')[currentRow].children;
         const targetArr = targetWord.split('');
         const guessArr = currentGuess.split('');
         const results = Array(5).fill('absent');
 
+        // Pass 1: Correct (Pink)
         guessArr.forEach((letter, i) => {
             if (letter === targetArr[i]) {
                 results[i] = 'correct';
                 targetArr[i] = null;
+                updateKeyColor(letter, 'correct');
             }
         });
+
+        // Pass 2: Present (Blue)
         guessArr.forEach((letter, i) => {
-            if (results[i] !== 'correct' && targetArr.includes(letter)) {
-                results[i] = 'present';
-                targetArr[targetArr.indexOf(letter)] = null;
+            if (results[i] !== 'correct') {
+                if (targetArr.includes(letter)) {
+                    results[i] = 'present';
+                    targetArr[targetArr.indexOf(letter)] = null;
+                    updateKeyColor(letter, 'present');
+                } else {
+                    updateKeyColor(letter, 'absent');
+                }
             }
         });
 
-        for (let i = 0; i < 5; i++) tiles[i].classList.add(results[i]);
+        // Apply colors to tiles
+        for (let i = 0; i < 5; i++) {
+            tiles[i].classList.add(results[i]);
+        }
 
-        if (currentGuess === targetWord) endGame(true);
-        else if (currentRow === 5) endGame(false);
-        else { currentRow++; currentGuess = ""; }
+        if (currentGuess === targetWord) {
+            endGame(true);
+        } else if (currentRow === 5) {
+            endGame(false);
+        } else {
+            currentRow++;
+            currentGuess = "";
+        }
+    }
+
+    function updateKeyColor(letter, status) {
+        const btn = document.getElementById(`key-${letter}`);
+        if (!btn) return;
+
+        // Logic: Correct (pink) overrides Blue, Blue overrides Grey
+        if (btn.classList.contains('correct')) return;
+        if (btn.classList.contains('present') && status === 'absent') return;
+
+        btn.classList.remove('present', 'absent');
+        btn.classList.add(status);
     }
 
     function endGame(win) {
         gameOver = true;
-        const msg = win ? "✨ You got it! ✨" : `The word was ${targetWord}`;
+        const msg = win 
+            ? "✨ <b>Excellent!</b> ✨<br>You found the word." 
+            : `😔 The word was <b>${targetWord}</b>`;
         document.getElementById('result-msg').innerHTML = msg;
-        document.getElementById('result-modal').classList.remove('hidden');
+        setTimeout(() => {
+            document.getElementById('result-modal').classList.remove('hidden');
+        }, 500);
     }
 
     function closeIntro() { document.getElementById('intro-modal').classList.add('hidden'); }
 
     window.addEventListener('keydown', e => {
-        if (e.key === "Enter") handleInput("ENTER");
-        else if (e.key === "Backspace") handleInput("DEL");
-        else if (/^[a-zA-Z]$/.test(e.key)) handleInput(e.key.toUpperCase());
+        const key = e.key.toUpperCase();
+        if (key === "ENTER") handleInput("ENTER");
+        else if (key === "BACKSPACE") handleInput("DEL");
+        else if (/^[A-Z]$/.test(key)) handleInput(key);
     });
 </script>
 </body>
