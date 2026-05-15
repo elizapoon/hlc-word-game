@@ -9,7 +9,7 @@
         :root {
             --pink: rgb(231, 130, 169);
             --blue: rgb(65, 143, 222);
-            --grey: rgb(211, 211, 211);
+            --grey: rgb(180, 180, 180);
             --border: #dcdcdc;
             --white: #ffffff;
             --key-bg: #e5e5e5;
@@ -21,95 +21,94 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevents awkward scrolling */
+            overflow: hidden;
+            background-color: var(--white);
+            font-family: 'Fredoka', sans-serif;
         }
 
         body {
-            background-color: var(--white);
-            font-family: 'Fredoka', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Fix for mobile browser UI bars */
-            height: 100vh;
-            height: -webkit-fill-available;
+            /* Fix for address bar cutoff */
+            height: 100vh; 
+            height: 100svh;
             padding: 5px;
         }
 
-        header { flex: 0 0 auto; padding: 5px 0; }
-        h1 { margin: 0; font-size: clamp(1rem, 4vw, 1.4rem); letter-spacing: 2px; }
+        header { flex: 0 0 auto; padding: 10px 0 5px 0; }
+        h1 { margin: 0; font-size: clamp(1.1rem, 5vw, 1.4rem); letter-spacing: 2px; }
 
         .legend {
             flex: 0 0 auto;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             margin: 5px 0;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             background: #f9f9f9;
-            padding: 6px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 10px;
             width: 100%;
-            max-width: 350px;
+            max-width: 380px;
         }
-        .legend-item { display: flex; align-items: center; gap: 4px; }
-        .legend-box { width: 10px; height: 10px; border-radius: 2px; }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-box { width: 12px; height: 12px; border-radius: 3px; }
         .legend-box.pink { background-color: var(--pink); }
         .legend-box.blue { background-color: var(--blue); }
         .legend-box.grey { background-color: var(--grey); }
 
         #game-container {
-            flex: 1 1 auto; /* This container grows and shrinks */
+            flex: 1 1 auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
-            min-height: 0; /* Critical for flex shrinking */
+            min-height: 0;
+            padding: 10px 0;
         }
 
         #board {
             display: grid;
             grid-template-rows: repeat(6, 1fr);
-            gap: 4px;
-            padding: 5px;
-            height: 100%;
-            max-height: 380px; /* Limits size on big screens */
-            aspect-ratio: 5 / 6;
+            gap: 5px;
+            /* Use vmin to prevent "dot" collapse */
+            height: auto;
+            width: min(75vw, 320px);
+            max-height: 100%;
         }
 
         .row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
+            gap: 5px;
         }
 
         .tile {
             width: 100%;
-            height: 100%;
             aspect-ratio: 1 / 1;
             border: 2px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: clamp(1rem, 5vh, 1.4rem);
+            font-size: clamp(1.2rem, 6vmin, 1.8rem);
             font-weight: 600;
             text-transform: uppercase;
-            transition: background-color 0.3s;
         }
 
-        /* Status Colors */
         .correct { background-color: var(--pink) !important; border-color: var(--pink) !important; color: white; }
         .present { background-color: var(--blue) !important; border-color: var(--blue) !important; color: white; }
         .absent { background-color: var(--grey) !important; border-color: var(--grey) !important; color: white; }
 
         #keyboard {
-            flex: 0 0 auto; /* Keyboard stays at its preferred size */
+            flex: 0 0 auto;
             width: 100%;
-            max-width: 480px;
-            padding: 5px 0 15px 0; /* Extra bottom padding for "safe area" */
+            max-width: 500px;
+            padding: 5px 0 10px 0;
+            margin-top: auto;
         }
 
         .kb-row {
@@ -124,16 +123,15 @@
             border: none;
             border-radius: 4px;
             margin: 0 2px;
-            height: clamp(40px, 7vh, 55px);
+            height: clamp(40px, 8vh, 58px);
             flex: 1;
             font-family: inherit;
             font-weight: 600;
-            font-size: clamp(0.7rem, 3vw, 0.9rem);
+            font-size: clamp(0.7rem, 3.5vw, 0.9rem);
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: 0.2s;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -142,17 +140,22 @@
         /* Modals */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center;
             z-index: 1000;
         }
         .modal {
-            background: white; padding: 20px; border-radius: 20px; width: 85%; max-width: 380px;
-            text-align: center; max-height: 80vh; overflow-y: auto;
+            background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px;
+            text-align: center; max-height: 90vh; overflow-y: auto;
         }
         .hidden { display: none !important; }
+        .example-grid { display: flex; gap: 5px; justify-content: center; margin: 10px 0; }
+        .ex-tile { width: 35px; height: 35px; border: 2px solid var(--border); border-radius: 5px; 
+                   display: flex; justify-content: center; align-items: center; font-weight: 600; font-size: 1.1rem; }
+        
+        .modal hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
         .modal button.close-btn { 
-            background: var(--blue); color: white; border: none; padding: 12px 30px; 
-            border-radius: 10px; font-weight: 600; cursor: pointer; margin-top: 10px;
+            background: var(--blue); color: white; border: none; padding: 12px 35px; 
+            border-radius: 10px; font-weight: 600; cursor: pointer;
         }
     </style>
 </head>
@@ -161,9 +164,9 @@
 <header><h1>GUESS THE WORD!</h1></header>
 
 <div class="legend">
-    <div class="legend-item"><div class="legend-box pink"></div><span>Pink=Right</span></div>
-    <div class="legend-item"><div class="legend-box blue"></div><span>Blue=Wrong Spot</span></div>
-    <div class="legend-item"><div class="legend-box grey"></div><span>Grey=Incorrect</span></div>
+    <div class="legend-item"><div class="legend-box pink"></div><span>Pink = Right spot</span></div>
+    <div class="legend-item"><div class="legend-box blue"></div><span>Blue = Wrong spot</span></div>
+    <div class="legend-item"><div class="legend-box grey"></div><span>Grey = Wrong letter</span></div>
 </div>
 
 <div id="game-container">
@@ -179,8 +182,22 @@
 <div id="intro-modal" class="modal-overlay">
     <div class="modal">
         <h2>How To Play</h2>
-        <p>Guess the word in 6 tries!</p>
-        <p>Colors change to show how close you were.</p>
+        <p>Guess the word of the day in 6 tries!</p>
+        <p>After each guess, the tiles change colour.</p>
+        <hr>
+        <div class="example-grid">
+            <div class="ex-tile correct">A</div><div class="ex-tile">P</div><div class="ex-tile">P</div><div class="ex-tile">L</div><div class="ex-tile">E</div>
+        </div>
+        <p><strong>Pink</strong> = Correct position</p>
+        <div class="example-grid">
+            <div class="ex-tile">D</div><div class="ex-tile present">R</div><div class="ex-tile">E</div><div class="ex-tile">A</div><div class="ex-tile">M</div>
+        </div>
+        <p><strong>Blue</strong> = Wrong position</p>
+        <div class="example-grid">
+            <div class="ex-tile">G</div><div class="ex-tile">E</div><div class="ex-tile">R</div><div class="ex-tile absent">M</div><div class="ex-tile">S</div>
+        </div>
+        <p><strong>Grey</strong> = Not in word</p>
+        <hr>
         <button class="close-btn" onclick="closeIntro()">PLAY</button>
     </div>
 </div>
@@ -188,6 +205,7 @@
 <div id="result-modal" class="modal-overlay hidden">
     <div class="modal">
         <div id="result-msg"></div>
+        <hr>
         <button class="close-btn" onclick="location.reload()">OK</button>
     </div>
 </div>
@@ -203,9 +221,8 @@
     let currentGuess = "";
     let currentRow = 0;
     let gameOver = false;
-    const keyMap = {}; // To track keyboard colors
 
-    // Build Board
+    // Board Generation
     const board = document.getElementById('board');
     for (let i = 0; i < 6; i++) {
         const row = document.createElement('div');
@@ -218,14 +235,14 @@
         board.appendChild(row);
     }
 
-    // Build Keyboard
-    const rows = [
+    // Keyboard Generation
+    const keyRows = [
         ["Q","W","E","R","T","Y","U","I","O","P"],
         ["A","S","D","F","G","H","J","K","L"],
         ["DEL","Z","X","C","V","B","N","M","ENTER"]
     ];
 
-    rows.forEach((row, i) => {
+    keyRows.forEach((row, i) => {
         const container = document.getElementById(`row${i+1}`);
         row.forEach(key => {
             const btn = document.createElement('button');
@@ -234,7 +251,6 @@
             btn.id = `key-${key}`;
             btn.onclick = () => handleInput(key);
             container.appendChild(btn);
-            keyMap[key] = btn;
         });
     });
 
@@ -261,10 +277,9 @@
     async function submitGuess() {
         if (currentGuess.length !== 5) return;
 
-        // Simple validation check
         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`);
         if (!response.ok) {
-            alert("Not in word list!");
+            alert("Not a valid word!");
             return;
         }
 
@@ -273,7 +288,7 @@
         const guessArr = currentGuess.split('');
         const results = Array(5).fill('absent');
 
-        // Pass 1: Correct (Pink)
+        // Pass 1: Correct letters
         guessArr.forEach((letter, i) => {
             if (letter === targetArr[i]) {
                 results[i] = 'correct';
@@ -282,7 +297,7 @@
             }
         });
 
-        // Pass 2: Present (Blue)
+        // Pass 2: Present/Absent letters
         guessArr.forEach((letter, i) => {
             if (results[i] !== 'correct') {
                 if (targetArr.includes(letter)) {
@@ -295,42 +310,30 @@
             }
         });
 
-        // Apply colors to tiles
-        for (let i = 0; i < 5; i++) {
-            tiles[i].classList.add(results[i]);
-        }
+        for (let i = 0; i < 5; i++) tiles[i].classList.add(results[i]);
 
-        if (currentGuess === targetWord) {
-            endGame(true);
-        } else if (currentRow === 5) {
-            endGame(false);
-        } else {
-            currentRow++;
-            currentGuess = "";
-        }
+        if (currentGuess === targetWord) endGame(true);
+        else if (currentRow === 5) endGame(false);
+        else { currentRow++; currentGuess = ""; }
     }
 
     function updateKeyColor(letter, status) {
-        const btn = document.getElementById(`key-${letter}`);
-        if (!btn) return;
-
-        // Logic: Correct (pink) overrides Blue, Blue overrides Grey
-        if (btn.classList.contains('correct')) return;
-        if (btn.classList.contains('present') && status === 'absent') return;
-
-        btn.classList.remove('present', 'absent');
-        btn.classList.add(status);
+        const keyBtn = document.getElementById(`key-${letter}`);
+        if (!keyBtn) return;
+        if (keyBtn.classList.contains('correct')) return;
+        if (keyBtn.classList.contains('present') && status === 'absent') return;
+        
+        keyBtn.classList.remove('present', 'absent');
+        keyBtn.classList.add(status);
     }
 
     function endGame(win) {
         gameOver = true;
         const msg = win 
-            ? "✨ <b>Excellent!</b> ✨<br>You found the word." 
+            ? "✨ <b>Excellent!</b> ✨<br>You solved it." 
             : `😔 The word was <b>${targetWord}</b>`;
         document.getElementById('result-msg').innerHTML = msg;
-        setTimeout(() => {
-            document.getElementById('result-modal').classList.remove('hidden');
-        }, 500);
+        setTimeout(() => document.getElementById('result-modal').classList.remove('hidden'), 500);
     }
 
     function closeIntro() { document.getElementById('intro-modal').classList.add('hidden'); }
@@ -344,3 +347,5 @@
 </script>
 </body>
 </html>
+
+The slide deck on **Mobile Game Optimization** is ready! It explains exactly how these technical fixes solve the viewport and scaling issues. Take a look and let me know if you'd like to adjust any of the features further.
